@@ -6,6 +6,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import CardBoard from "../CardBoard";
 
 import { useBlockChain } from "../../blockchain";
+import CardListView from "../CardListView";
 
 const GameContainer = (props) => {
   const { isLoged, account, balance, doLogin, doMint, myTokens } =
@@ -32,11 +33,16 @@ const GameContainer = (props) => {
           <Button onClick={handleLogin}>Login</Button>
         </Row>
       ) : (
-        <Row>
-          <Col md={{ span: 4, offset: 4 }}>
-            <CardBoard {...props} onWonCard={handleOnWonCard}></CardBoard>
-          </Col>
-        </Row>
+        <div>
+          <Row>
+            <Col md={{ span: 4, offset: 4 }}>
+              <CardBoard {...props} onWonCard={handleOnWonCard}></CardBoard>
+            </Col>
+          </Row>
+          <Row>
+            <CardListView tokens={myTokens}></CardListView>
+          </Row>
+        </div>
       )}
     </Container>
   );
