@@ -16,9 +16,34 @@ const GameContainer = (props) => {
     await doLogin();
   };
 
+  const handleOnRegistered = async () => {
+    alert("Token registrado com sucesso. Sua transação está sendo processada")
+  }
+
+  const handleReceipt = async () => {
+    alert("Sua NFT foi mintada com sucesso. Aguardando confirmação")
+  }
+
+  const handleConfirmation = async () => {
+
+  }
+
+  const handleError = async (message) => {
+    alert(message)
+  }
+
+  const eventHandlers = {
+    onRegistered: handleOnRegistered,
+    onReceipt: handleReceipt,
+    onConfirmation: handleConfirmation,
+    onError: handleError,
+  };
+
   const handleOnWonCard = (cardId, cardUrl) => {
     console.log(cardId);
     console.log(cardUrl);
+
+    doMint(cardUrl, eventHandlers);
   };
 
   return (

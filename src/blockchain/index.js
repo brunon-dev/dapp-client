@@ -55,7 +55,34 @@ export const BlockchainProvider = ({ children }) => {
     }
   }
 
-  const doMint = async (tokenURI, events) => {};
+  const doMint = async (tokenURI, events) => {
+    const { onRegistered, onError, onReceipt, onConfirmation } = events;
+
+    const web3 = window.web3;
+
+    token.methods
+      .mint(account, tokenURI)
+      .send({ from: account })
+      .on("transactionHash", async (hash) => {
+        console.log("Seu NFT's foi registrado");
+        await onRegistered(hash);
+      })
+      .on("receipt", async (receipt) => {
+        console.log("Seu NFT's foi mintado com sucesso");
+
+        await onReceipt(receipt);
+        await getMyTokensFromBlockchain(token, account);
+      })
+      .on("confirmation", async (confirmationNumber, receipt) => {
+        console.log("Confirmação registrada");
+
+        await onConfirmation(confirmationNumber, receipt);
+        await getMyTokensFromBlockchain(token, account);
+      })
+      .on("error", async (err) => {
+        onError(err.message);
+      });
+  };
 
   const loadBlockchainData = async () => {
     const web3 = window.web3;
